@@ -16,7 +16,7 @@
     <input type="text" name="condition_name" value="{{ old('condition_name', $condition->condition_name) }}"><br><br>
 
     <label>Description:</label><br>
-    <textarea name="description">{{ old('description', $condition->description) }}</textarea><br><br>
+    <textarea name="description" required="required">{{ old('description', $condition->description) }}</textarea><br><br>
 
     <button type="submit">Update</button>
 </form>

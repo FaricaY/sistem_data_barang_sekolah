@@ -23,7 +23,7 @@
 
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
+            <textarea name="description" id="description" class="form-control" required="required">{{ old('description') }}</textarea>
         </div>
 
         <button type="submit" class="btn btn-primary">Create Category</button>

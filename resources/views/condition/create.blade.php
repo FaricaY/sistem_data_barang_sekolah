@@ -11,10 +11,10 @@
 <form action="{{ route('conditions.store') }}" method="POST">
     @csrf
     <label>Condition Name:</label><br>
-    <input type="text" name="condition_name" value="{{ old('condition_name') }}"><br><br>
+    <input type="text" name="condition_name" value="{{ old('condition_name') }}" required><br><br>
 
     <label>Description:</label><br>
-    <textarea name="description">{{ old('description') }}</textarea><br><br>
+    <textarea name="description" required="required">{{ old('description') }}</textarea><br><br>
 
     <button type="submit">Create Condition</button>
 </form>
