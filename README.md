@@ -26,6 +26,9 @@ Dengan adanya aplikasi ini, pengguna dapat menyimpan, memperbarui, dan menghapus
 ---
 
 ## 📸 Dokumentasi
+-Dashbaord
 ![Dashboard](images/dashboard.png)
+-Login
 ![Login](images/login.png)
+-Register
 ![Register](images/register.png)
