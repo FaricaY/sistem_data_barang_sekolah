@@ -12,7 +12,7 @@ class ConditionController extends Controller
      */
     public function index()
     {
-        $conditions = Condition::all();
+        $conditions = Condition::paginate(7);
         return view('condition.index', compact('conditions'));
     }
 
@@ -21,7 +21,8 @@ class ConditionController extends Controller
      */
     public function create()
     {
-        return view('condition.create');
+        // FIX: Point to your custom view name 'create_condition.blade.php'
+        return view('condition.create_condition');
     }
 
     /**
@@ -30,50 +31,35 @@ class ConditionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'condition_name' => 'required|string|max:255',
+            'condition_name' => 'required|string|max:255|unique:conditions,condition_name',
         ]);
 
         Condition::create($request->all());
 
-        return redirect()->route('condition.index')->with('success', 'Condition berhasil ditambahkan.');
+        return redirect()->route('condition.index')->with('success', 'Condition created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Condition $condition)
     {
-        return view('condition.edit', compact('condition'));
+        return view('condition.edit_condition', compact('condition'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Condition $condition)
     {
         $request->validate([
-            'condition_name' => 'required|string|max:255',
+            'condition_name' => 'required|string|max:255|unique:conditions,condition_name,' . $condition->id,
         ]);
 
         $condition->update($request->all());
 
-        return redirect()->route('condition.index')->with('success', 'Condition berhasil diperbarui.');
+        return redirect()->route('condition.index')->with('success', 'Condition updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Condition $condition)
     {
         $condition->delete();
-        return redirect()->route('condition.index')->with('success', 'Condition berhasil dihapus');
+        
+        return redirect()->route('condition.index')->with('success', 'Condition deleted successfully.');
     }
 }
+

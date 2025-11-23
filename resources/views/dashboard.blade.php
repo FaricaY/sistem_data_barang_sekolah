@@ -7,144 +7,171 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
 <body class="bg-gray-100">
-
-    <!-- Sidebar -->
-    <aside class="fixed top-0 left-0 h-screen w-64 bg-purple-500 text-white flex flex-col">
-        <!-- Logo -->
-        <div class="p-6">
-            <h1 class="text-2xl font-bold">Smart<span class="text-pink-200">Assets</span></h1>
-        </div>
-
-        <!-- User -->
-        <div class="flex flex-col items-center bg-purple-400 rounded-xl p-4 mx-4 mb-6">
-            <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
-                <i class="fas fa-user text-gray-500 text-2xl"></i>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="fixed top-0 left-0 h-screen w-64 bg-purple-600 text-white flex flex-col shadow-2xl z-20">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">Smart<span class="text-pink-300">Assets</span></h1>
             </div>
-            <div class="text-center mt-3">
-                <h2 class="text-sm font-semibold">{{ $user->name }}</h2>
-                <p class="text-xs text-gray-100 break-words max-w-[150px] mx-auto">{{ $user->email }}</p>
-            </div>
-        </div>
 
-        <!-- Navigation -->
-        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
-            <a href="{{ route('dashboard') }}" 
-               class="flex items-center space-x-2 p-3 rounded-lg transition 
-                      hover:bg-white hover:text-purple-600 {{ request()->routeIs('dashboard') ? 'bg-white text-purple-600' : '' }}">
-                <i class="fas fa-th-large"></i><span>Dashboard</span>
-            </a>
-            <a href="{{ route('data') }}" 
-               class="flex items-center space-x-2 p-3 rounded-lg transition 
-                      hover:bg-white hover:text-purple-600 {{ request()->routeIs('data') ? 'bg-white text-purple-600' : '' }}">
-                <i class="fas fa-database"></i><span>Data</span>
-            </a>
-            <a href="{{ route('category') }}" 
-               class="flex items-center space-x-2 p-3 rounded-lg transition 
-                      hover:bg-white hover:text-purple-600 {{ request()->routeIs('category') ? 'bg-white text-purple-600' : '' }}">
-                <i class="fas fa-th-list"></i><span>Category</span>
-            </a>
-            <a href="{{ route('item-condition') }}" 
-               class="flex items-center space-x-2 p-3 rounded-lg transition 
-                      hover:bg-white hover:text-purple-600 {{ request()->routeIs('item-condition') ? 'bg-white text-purple-600' : '' }}">
-                <i class="fas fa-tools"></i><span>Item Condition</span>
-            </a>
-            <a href="{{ route('settings') }}" 
-               class="flex items-center space-x-2 p-3 rounded-lg transition 
-                      hover:bg-white hover:text-purple-600 {{ request()->routeIs('settings') ? 'bg-white text-purple-600' : '' }}">
-                <i class="fas fa-cog"></i><span>Settings</span>
-            </a>
-            <a href="{{ route('help') }}" 
-               class="flex items-center space-x-2 p-3 rounded-lg transition 
-                      hover:bg-white hover:text-purple-600 {{ request()->routeIs('help') ? 'bg-white text-purple-600' : '' }}">
-                <i class="fas fa-question-circle"></i><span>Help</span>
-            </a>
-        </nav>
+            <div class="flex flex-col items-center bg-purple-700/50 rounded-xl p-4 mx-4 mb-6 shadow-inner">
+                <div class="w-16 h-16 rounded-full bg-pink-300 flex items-center justify-center border-2 border-white overflow-hidden">
 
-        <!-- Logout Button (sticks bottom) -->
-        <form method="POST" action="{{ route('logout') }}" class="p-4">
-            @csrf
-            <button type="submit" 
-                    class="flex items-center space-x-2 w-full p-3 rounded-lg hover:bg-white hover:text-purple-600 transition">
-                <i class="fas fa-sign-out-alt"></i><span>Log out</span>
-            </button>
-        </form>
-    </aside>
+                    @if(optional(Auth::user()->profile)->profile_photo_path)
+                        <img src="{{ asset('storage/' . Auth::user()->profile->profile_photo_path) }}" alt="User Photo" class="w-full h-full object-cover">
+                    @else
+                        <i class="fas fa-user text-purple-800 text-2xl"></i>
+                    @endif
+                </div>
+                <div class="text-center mt-3">
+                    <h2 class="text-sm font-semibold">{{ Auth::user()->name ?? 'Guest User' }}</h2>
+                    <p class="text-xs text-gray-200 break-words max-w-[150px] mx-auto">{{ Auth::user()->email ?? 'N/A' }}</p>
+                </div>
+            </div>
 
-    <!-- Main Content -->
-    <main class="ml-64 p-6 overflow-y-auto h-screen">
-        <h2 class="text-2xl font-bold">Welcome back, {{ $user->name }}!</h2>
-        <p class="text-gray-600 mb-6">It is time to manage your inventory</p>
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 p-3 rounded-xl transition duration-200 hover:bg-white hover:text-purple-600 {{ request()->routeIs('dashboard') ? 'bg-white text-purple-600 font-bold shadow-md' : 'text-white' }}">
+                    <i class="fas fa-th-large w-5"></i><span>Dashboard</span>
+                </a>
+                <a href="{{ route('items.index') }}" class="flex items-center space-x-3 p-3 rounded-xl transition duration-200 hover:bg-white hover:text-purple-600 {{ request()->routeIs('items.*') ? 'bg-white text-purple-600 font-bold shadow-md' : 'text-white' }}">
+                    <i class="fas fa-database w-5"></i><span>Data</span>
+                </a>
+                <a href="{{ route('categories.index') }}" class="flex items-center space-x-3 p-3 rounded-xl transition duration-200 hover:bg-white hover:text-purple-600 {{ request()->routeIs('categories.*') ? 'bg-white text-purple-600 font-bold shadow-md' : 'text-white' }}">
+                    <i class="fas fa-th-list w-5"></i><span>Categories</span>
+                </a>
+                <a href="{{ route('condition.index') }}" class="flex items-center space-x-3 p-3 rounded-xl transition duration-200 hover:bg-white hover:text-purple-600 {{ request()->routeIs('condition.*') ? 'bg-white text-purple-600 font-bold shadow-md' : 'text-white' }}">
+                    <i class="fas fa-tools w-5"></i><span>Item Condition</span>
+                </a>
+                <a href="{{ route('settings') }}" class="flex items-center space-x-3 p-3 rounded-xl transition duration-200 hover:bg-white hover:text-purple-600 {{ request()->routeIs('settings') || request()->routeIs('profile.edit') ? 'bg-white text-purple-600 font-bold shadow-md' : 'text-white' }}">
+                    <i class="fas fa-cog w-5"></i><span>Settings</span>
+                </a>
+                <a href="{{ route('help.index') }}" class="flex items-center space-x-3 p-3 rounded-xl transition duration-200 hover:bg-white hover:text-purple-600 {{ request()->routeIs('help.index') ? 'bg-white text-purple-600 font-bold shadow-md' : 'text-white' }}">
+                    <i class="fas fa-question-circle w-5"></i><span>Help</span>
+                </a>
+            </nav>
 
-        <!-- Stats -->
-        <div class="grid grid-cols-4 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow text-center">
-                <p class="text-purple-500 font-semibold">Total items</p>
-                <h3 class="text-2xl font-bold">{{ $stats['total_items'] }}</h3>
+            <div class="p-4">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="flex items-center space-x-3 w-full p-3 rounded-xl text-white bg-purple-700 hover:bg-pink-300 hover:text-purple-900 transition font-semibold shadow-lg justify-center">
+                        <i class="fas fa-sign-out-alt"></i><span>Log out</span>
+                    </button>
+                </form>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow text-center">
-                <p class="text-purple-500 font-semibold">Items in</p>
-                <h3 class="text-2xl font-bold">{{ $stats['items_in'] }}</h3>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow text-center">
-                <p class="text-purple-500 font-semibold">Items out</p>
-                <h3 class="text-2xl font-bold">{{ $stats['items_out'] }}</h3>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow text-center">
-                <p class="text-purple-500 font-semibold">Total value</p>
-                <h3 class="text-2xl font-bold">${{ number_format($stats['total_value'], 0) }}</h3>
-            </div>
-        </div>
+        </aside>
 
-        <!-- Chart -->
-        <div class="bg-white p-6 rounded-lg shadow mb-8">
-            <h3 class="text-lg font-bold text-gray-700 mb-4">Items In vs Damaged Chart</h3>
-            <canvas id="itemsChart" height="120"></canvas>
-        </div>
+        <!-- Main Content -->
+        <main class="ml-64 flex-1 p-8 overflow-y-auto">
+            @if(Auth::user())
+                <h2 class="text-3xl font-bold text-gray-800">Welcome back, {{ Auth::user()->name }}!</h2>
+                <p class="text-gray-600 mb-8">It is time to manage your inventory</p>
+            @endif
 
-        <!-- Bottom Cards -->
-        <div class="grid grid-cols-2 gap-6">
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="font-bold text-gray-700">Status Indicators</h3>
-                <p class="text-sm text-gray-500">Procurement Plan</p>
-                <p class="mt-2">10 Laptops, 5 projectors</p>
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-purple-500 hover:shadow-2xl transition duration-300">
+                    <p class="text-purple-700 font-semibold text-sm uppercase">Total Items</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 mt-1">{{ $stats['total_items'] ?? 0 }}</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-pink-500 hover:shadow-2xl transition duration-300">
+                    <p class="text-pink-700 font-semibold text-sm uppercase">Items In Stock</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 mt-1">{{ $stats['items_in'] ?? 0 }}</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-yellow-500 hover:shadow-2xl transition duration-300">
+                    <p class="text-yellow-700 font-semibold text-sm uppercase">Items Issued/Out</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 mt-1">{{ $stats['items_out'] ?? 0 }}</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-green-500 hover:shadow-2xl transition duration-300">
+                    <p class="text-green-700 font-semibold text-sm uppercase">Total Asset Value</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 mt-1">${{ number_format($stats['total_value'] ?? 0, 0, '.', ',') }}</h3>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="font-bold text-gray-700">Inventory Goals</h3>
-                <p class="text-sm text-gray-500">Maintenance</p>
-                <p class="mt-2">AC service, chair repairs</p>
+
+            <!-- Chart -->
+            <div class="bg-white p-6 rounded-2xl shadow-xl mb-8">
+                <h3 class="text-xl font-bold text-gray-700 mb-4 border-b pb-2">6-Month Inventory Trend</h3>
+                <div style="height: 300px;">
+                    <canvas id="itemsChart"></canvas>
+                </div>
             </div>
-        </div>
-    </main>
+
+            <!-- Bottom Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-xl border-l-4 border-blue-500">
+                    <h3 class="font-bold text-lg text-gray-800">Status Indicators</h3>
+                    <p class="text-sm text-gray-500 mb-3">Key procurement items for the quarter.</p>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>10 Laptops (Pending Order)</li>
+                        <li>5 Projectors (Awaiting Delivery)</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-xl border-l-4 border-orange-500">
+                    <h3 class="font-bold text-lg text-gray-800">Inventory Goals</h3>
+                    <p class="text-sm text-gray-500 mb-3">Maintenance schedule and immediate needs.</p>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>AC Service (Scheduled Next Week)</li>
+                        <li>Chair Repairs (5 units needed)</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- Chart.js Script -->
     <script>
-        const ctx = document.getElementById('itemsChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: @json($chart['months']),
-                datasets: [
-                    {
-                        label: 'Items In',
-                        data: @json($chart['items_in']),
-                        backgroundColor: '#a78bfa'
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('itemsChart');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: @json($chart['months'] ?? []), 
+                        datasets: [
+                            {
+                                label: 'Items In',
+                                data: @json($chart['items_in'] ?? []),
+                                backgroundColor: '#a78bfa',
+                                borderRadius: 5
+                            },
+                            {
+                                label: 'Damaged',
+                                data: @json($chart['damaged'] ?? []),
+                                backgroundColor: '#f472b6',
+                                borderRadius: 5
+                            }
+                        ]
                     },
-                    {
-                        label: 'Damaged',
-                        data: @json($chart['damaged']),
-                        backgroundColor: '#f472b6'
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { 
+                                position: 'top',
+                                labels: {
+                                    font: { family: 'Inter', weight: '600' }
+                                }
+                            },
+                            tooltip: { mode: 'index', intersect: false }
+                        },
+                        scales: { 
+                            y: { 
+                                beginAtZero: true,
+                                grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        }
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'top' } },
-                scales: { y: { beginAtZero: true } }
+                });
             }
         });
     </script>
-
 </body>
 </html>

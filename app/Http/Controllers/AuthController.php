@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -26,20 +26,16 @@ class AuthController extends Controller
             'password'   => 'required|string|confirmed|min:6',
         ]);
 
-$user = User::create([
-    'first_name' => $request->first_name,
-    'last_name'  => $request->last_name,
-    'username'   => $request->username,
-    'email'      => $request->email,
-    'password'   => Hash::make($request->password),
-    'name'       => $request->first_name . ' ' . $request->last_name, // 👈 add this
-]);
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'username'   => $request->username,
+            'email'      => $request->email,
+            'password'   => Hash::make($request->password),
+            'name'       => $request->first_name . ' ' . $request->last_name,
+        ]);
 
-
-        // Option: auto-login after register
-        // Auth::login($user);
-
-        // Redirect to login instead (safer UX)
+        // Redirect to login
         return redirect()->route('login')->with('success', 'Account created successfully! Please login.');
     }
 
@@ -57,19 +53,31 @@ $user = User::create([
             'password' => 'required|string',
         ]);
 
-        // Try login with email
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $input = $request->input('email');
+        $password = $request->input('password');
+
+        // Check for login using email
+        if (Auth::attempt(['email' => $input, 'password' => $password])) {
             $request->session()->regenerate();
             return redirect()->route('dashboard')->with('success', 'Login successful!');
         }
 
-        // Try login with username
-        if (Auth::attempt(['username' => $request->email, 'password' => $request->password])) {
+        // Fallback: Check for login using username
+        if (Auth::attempt(['username' => $input, 'password' => $password])) {
             $request->session()->regenerate();
             return redirect()->route('dashboard')->with('success', 'Login successful!');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials.']);
+    }
+    
+    /**
+     * FIX: Add this method to show the logout confirmation page.
+     * This method is called by the 'logout.confirm' route in your web.php.
+     */
+    public function showLogoutConfirm()
+    {
+        return view('auth.logout'); // This loads the resources/views/auth/logout.blade.php file
     }
 
     // Logout

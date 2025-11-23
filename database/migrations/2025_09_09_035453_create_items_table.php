@@ -4,21 +4,36 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-    public function up(): void {
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('name');
-            $table->string('item_id')->unique();
-            $table->decimal('unit_price', 10, 2);
-            $table->integer('stock');
-            $table->string('category');
-            $table->string('status')->default('Pending'); // Active / Pending
+            
+            // This correctly links to your 'categories' table
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            
+            // This correctly links to your 'conditions' table
+            $table->foreignId('condition_id')->constrained('conditions')->onDelete('cascade');
+            
+            $table->integer('quantity');
+            $table->string('location');
             $table->timestamps();
         });
     }
 
-    public function down(): void {
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
         Schema::dropIfExists('items');
     }
 };
+

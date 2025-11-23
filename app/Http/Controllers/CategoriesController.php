@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories; // Using your plural model name as requested
 use Illuminate\Http\Request;
-use App\Models\Categories;
 
 class CategoriesController extends Controller
 {
@@ -12,7 +12,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Categories::all();
+        $categories = Categories::with('items')->paginate(7); 
         return view('categories.index', compact('categories'));
     }
 
@@ -21,7 +21,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        // FIX: Point to your custom view name 'create_categories.blade.php'
+        return view('categories.create_categories');
     }
 
     /**
@@ -30,20 +31,11 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_name' => 'required|unique:categories,category_name',
-            'description' => 'nullable',
+            'category_name' => 'required|unique:categories,category_name|max:255',
         ]);
 
         Categories::create($request->all());
-        return redirect()->route('categories.index')->with('success', 'Category berhasil ditambahkan');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
     /**
@@ -51,24 +43,30 @@ class CategoriesController extends Controller
      */
     public function edit(Categories $category)
     {
-        return view('categories.edit', compact('category'));
+        // FIX: Point to your custom view name 'edit_categories.blade.php'
+        return view('categories.edit_categories', compact('category'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, Categories $category)
     {
         $request->validate([
-            'category_name' => 'required|unique:categories,category_name,' . $category->id,
-            'description' => 'nullable',
+            'category_name' => 'required|max:255|unique:categories,category_name,' . $category->id,
         ]);
 
         $category->update($request->all());
-        return redirect()->route('categories.index')->with('success', 'Category berhasil diupdate');
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(Categories $category)
     {
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category berhasil dihapus');
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
-
 }
+
