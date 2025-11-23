@@ -1,50 +1,85 @@
 SmartAssets 📦
 
-SmartAssets adalah aplikasi manajemen aset berbasis web yang dirancang untuk memudahkan pengelolaan data barang (inventaris) sekolah atau organisasi. Aplikasi ini menyediakan fitur CRUD (Create, Read, Update, Delete) yang lengkap, autentikasi pengguna yang aman, dan antarmuka yang modern serta responsif.
+<p align="center">
+<strong>Aplikasi Manajemen Inventaris Sekolah Berbasis Web</strong>
+</p>
 
-Dibangun dengan Laravel 10 dan Tailwind CSS, proyek ini menawarkan pengalaman pengguna yang cepat dan intuitif, lengkap dengan sidebar navigasi yang memudahkan akses ke berbagai modul aplikasi.
+<p align="center">
+<a href="#-fitur-utama">Fitur</a> •
+<a href="#-tech-stack">Teknologi</a> •
+<a href="#-setup-database--instalasi">Instalasi</a> •
+<a href="#-dokumentasi-aplikasi">Dokumentasi</a>
+</p>
+
+📖 Tentang Aplikasi
+
+SmartAssets adalah aplikasi manajemen aset berbasis web yang dirancang untuk mempermudah pengelolaan data barang (inventaris) sekolah atau organisasi. Aplikasi ini menyediakan fitur CRUD (Create, Read, Update, Delete) yang lengkap, autentikasi pengguna yang aman, serta antarmuka yang modern dan responsif.
+
+Dibangun dengan kekuatan Laravel 10 dan keindahan Tailwind CSS, proyek ini menawarkan pengalaman pengguna yang cepat, intuitif, dan mudah diakses melalui berbagai perangkat.
 
 ✨ Fitur Utama
 
-🔐 Autentikasi Aman: Sistem Login dan Register bawaan untuk mengamankan akses data.
+🔐 Autentikasi Aman: Sistem Login dan Register terintegrasi untuk keamanan akses data.
 
-📊 Dashboard Interaktif: Ringkasan statistik inventaris (Total Item, Stok Masuk, Barang Keluar, Total Nilai Aset) dengan grafik visual.
+📊 Dashboard Interaktif: Ringkasan statistik visual (Total Item, Stok Masuk/Keluar, Nilai Aset) dengan grafik dinamis.
 
-📱 Desain Responsif: Tampilan yang menyesuaikan dengan berbagai ukuran layar (Desktop, Tablet, Mobile) menggunakan Tailwind CSS.
+📱 Desain Responsif: Tampilan sidebar dan layout yang menyesuaikan layar Desktop, Tablet, dan Mobile.
 
 🛠 Manajemen Item (CRUD):
 
-Menambah item baru dengan detail lengkap (Kode, Nama, Kategori, Kondisi, Lokasi).
+Tambah, Edit, Hapus, dan Lihat Detail Barang.
 
-Mengedit informasi item.
+Pencarian dan Filter data barang.
 
-Menghapus item dengan konfirmasi keamanan.
+Penyimpanan informasi detail (Kode, Nama, Kategori, Kondisi, Lokasi).
 
-Mencari dan memfilter item.
+📂 Manajemen Data Master: Pengelolaan Kategori Barang dan Kondisi Barang (Baik, Rusak, dll).
 
-📂 Kategori & Kondisi: Manajemen data master untuk Kategori Barang dan Kondisi Barang.
+👤 Profil Pengguna: Kustomisasi profil, foto profil, kontak, dan preferensi tema.
 
-👤 User Profile: Pengaturan profil pengguna termasuk foto profil, kontak, dan preferensi tema.
-
-🔔 Notifikasi: Umpan balik visual (Flash Messages) setelah melakukan aksi (Berhasil/Gagal).
+🔔 Notifikasi: Flash messages interaktif untuk notifikasi sukses atau gagal saat melakukan aksi.
 
 🗂 Entitas Utama
 
-Aplikasi ini menggunakan beberapa entitas database utama untuk mengelola data:
+Struktur data aplikasi ini dibangun di atas entitas berikut:
 
-Users: Menyimpan data autentikasi (nama, email, password).
+Entitas
 
-Profiles: Data pelengkap pengguna (foto profil, no. telepon, sosial media, preferensi bahasa/mata uang). Relasi One-to-One dengan User.
+Deskripsi
 
-Categories: Jenis pengelompokan barang (contoh: Elektronik, Furniture). Relasi One-to-Many dengan Items.
+Relasi
 
-Conditions: Status kondisi fisik barang (contoh: Baik, Rusak, Perlu Perbaikan). Relasi One-to-Many dengan Items.
+Users
 
-Items: Data inti inventaris yang mencakup kode unik, nama, jumlah, lokasi, serta relasi ke Kategori dan Kondisi.
+Menyimpan data autentikasi (nama, email, password).
+
+Utama
+
+Profiles
+
+Data pelengkap (foto, kontak, sosmed, preferensi).
+
+One-to-One ke User
+
+Categories
+
+Jenis pengelompokan barang (Misal: Elektronik, Mebel).
+
+One-to-Many ke Items
+
+Conditions
+
+Status fisik barang (Misal: Baik, Rusak).
+
+One-to-Many ke Items
+
+Items
+
+Data inti inventaris (Kode, Nama, Jumlah, Lokasi).
+
+Belongs To Category & Condition
 
 🛠 Tech Stack
-
-Aplikasi ini dibangun menggunakan teknologi modern berikut:
 
 Framework: Laravel 10 (PHP)
 
@@ -54,49 +89,63 @@ Database: MySQL
 
 Templating: Blade Templates
 
-Scripting: JavaScript (Chart.js untuk grafik, Vanilla JS untuk interaksi UI)
+Scripting: JavaScript (Chart.js, Vanilla JS)
 
 Icons: FontAwesome
 
 🚀 Setup Database & Instalasi
 
-Ikuti langkah-langkah berikut untuk menjalankan proyek ini di komputer lokal Anda:
+Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
 
-Clone Repository
+1. Clone Repository
 
 git clone [https://github.com/username-anda/smartassets.git](https://github.com/username-anda/smartassets.git)
 cd smartassets
 
 
-Install Dependencies
+2. Install Dependencies
+
+Instal paket PHP dan Node.js yang diperlukan:
 
 composer install
 npm install
 
 
-Konfigurasi Environment (Database)
-Duplikat file .env.example menjadi .env. Buka file .env dan sesuaikan konfigurasi database MySQL Anda (pastikan database kosong dengan nama smartassets atau sesuai keinginan sudah dibuat di MySQL):
+3. Konfigurasi Environment
+
+Duplikat file .env.example menjadi .env dan sesuaikan konfigurasi database Anda:
+
+cp .env.example .env
+
+
+Buka file .env dan atur kredensial database:
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=smartassets
+DB_DATABASE=smartassets  # Pastikan database ini sudah dibuat di MySQL
 DB_USERNAME=root
 DB_PASSWORD=
 
 
-Generate Key & Migrate Database
-Jalankan perintah berikut untuk membuat tabel-tabel database (Users, Profiles, Items, Categories, Conditions):
+4. Generate Key & Migrasi Database
+
+Jalankan perintah berikut untuk membuat key aplikasi, tabel database, dan symbolic link penyimpanan gambar:
 
 php artisan key:generate
 php artisan migrate
 php artisan storage:link
 
 
-Jalankan Aplikasi
+5. Jalankan Aplikasi
 
-npm run dev
+Buka dua terminal terpisah untuk menjalankan server Laravel dan Vite (untuk CSS/JS):
+
+# Terminal 1
 php artisan serve
+
+# Terminal 2
+npm run dev
 
 
 Buka http://localhost:8000 di browser Anda.
@@ -105,40 +154,34 @@ Buka http://localhost:8000 di browser Anda.
 
 Berikut adalah tampilan antarmuka dari aplikasi SmartAssets:
 
-1. Dashboard
+1. Dashboard & Statistik
 
-Halaman utama yang menampilkan ringkasan statistik dan grafik inventaris 6 bulan terakhir.
-![Dashboard](images/dashboard.png)
+Halaman utama menampilkan ringkasan statistik dan grafik inventaris.
 
 2. Halaman Login
 
 Halaman autentikasi untuk masuk ke dalam sistem.
-![Login](images/login.png)
 
 3. Halaman Register
 
 Halaman pendaftaran untuk pengguna baru.
-![Register](images/register.png)
 
 4. Daftar Data (Inventory)
 
-Halaman utama pengelolaan barang. Menampilkan tabel data dengan fitur pencarian dan paginasi.
-![Data](images/data.png)
+Halaman utama pengelolaan barang dengan fitur pencarian.
 
 5. Manajemen Kategori
 
-Halaman untuk menambah, mengedit, dan menghapus kategori barang.
-![Categories](images/categories.png)
+Halaman untuk mengatur pengelompokan barang.
 
 6. Kondisi Barang
 
-Halaman untuk mengatur status kondisi barang.
-![Conditions](images/conditions.png)
+Halaman untuk mengatur status fisik barang.
+
 7. Pengaturan Profil (Settings)
 
-Halaman untuk mengubah foto profil, informasi kontak, dan preferensi aplikasi.
-![Settings](settings/register.png)
+Halaman untuk mengubah foto profil dan informasi kontak.
+
 8. Pusat Bantuan (Help)
 
-Halaman FAQ dan panduan penggunaan aplikasi.
-![Help](images/help.png)
+Halaman FAQ dan panduan penggunaan.
